@@ -5,6 +5,7 @@ import (
 	"regexp"
 )
 
+// Source represents a text file that contains citations
 type Source struct {
 	Filename string
 	Content  []byte

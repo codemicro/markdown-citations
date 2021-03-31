@@ -10,6 +10,11 @@ import (
 
 var referenceRegexp = regexp.MustCompile(`(?m)\[r:([^\s]+)\]`)
 
+// TransformReferences finds any references in the form [r:reference-name] in fcont and substitutes them
+// for a numbered link with the corresponding URL.
+//
+// If `<!-- c:footer -->` is found within fcont, a footer is generated of all citations and the associated
+// note with them, if one is supplied.
 func TransformReferences(fcont *[]byte, citations map[string]*Citation) error {
 
 	numerical := make(map[string]int)

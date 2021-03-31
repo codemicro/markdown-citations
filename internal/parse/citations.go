@@ -14,6 +14,7 @@ type Citation struct {
 
 var citationParseRegexp = regexp.MustCompile(`(?m)^([^\s]+):\s(.+)$`)
 
+// CitationsFromSources takes a slice of Source pointers and extracts all citations from them
 func CitationsFromSources(sources []*Source) (map[string]*Citation, error) {
 
 	cit := make(map[string]*Citation)
