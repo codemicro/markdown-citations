@@ -82,7 +82,7 @@ The citation name is what you'll use to refer to this citation in your document.
 
 ### Referring to citation
 
-When writing your document, you can include a citation by using the following: `[r:citation-name]`. These can be placed anywhere in a document, and will automatically be converted into a numbered link.
+When writing your document, you can include a citation by using the following: `[r:citation-name]`. These can be placed anywhere in a document, and will automatically be converted into a numbered link. The citation name is case insensitive.
 
 ### Including an index of citations
 

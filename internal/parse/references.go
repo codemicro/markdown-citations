@@ -27,7 +27,7 @@ func TransformReferences(fcont *[]byte, citations map[string]*Citation) error {
 	}
 
 	for _, match := range matches {
-		stringMatchName := string(match[1])
+		stringMatchName := strings.ToLower(string(match[1]))
 
 		cit, foundCitation := citations[stringMatchName]
 		if !foundCitation {

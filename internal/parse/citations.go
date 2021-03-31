@@ -41,7 +41,7 @@ func CitationsFromSources(sources []*Source) (map[string]*Citation, error) {
 					c.Text = strings.Join(x[1:], " ")
 				}
 
-				cit[string(subs[1])] = &c
+				cit[strings.ToLower(string(subs[1]))] = &c
 
 			}
 		}
