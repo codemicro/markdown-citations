@@ -1,7 +1,7 @@
 package parse
 
 import (
-	"os"
+	"io/ioutil"
 	"regexp"
 )
 
@@ -39,23 +39,12 @@ func LoadSources(sources []*Source) error {
 	for _, source := range sources {
 
 		// TODO: make this filepath relative to the source file path
-		file, err := os.Open(source.Filename)
-		defer file.Close()
+		fc, err := ioutil.ReadFile(source.Filename)
 		if err != nil {
 			return err
 		}
 
-		fstat, err := file.Stat()
-		if err != nil {
-			return err
-		}
-
-		source.Content = make([]byte, fstat.Size())
-
-		if _, err = file.Read(source.Content); err != nil {
-			return err
-		}
-
+		source.Content = fc
 	}
 	return nil
 }
