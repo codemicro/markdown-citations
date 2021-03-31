@@ -4,15 +4,19 @@ import (
 	"bytes"
 	"fmt"
 	"regexp"
+	"strings"
 )
 
-type Citations map[string]string
+type Citation struct {
+	URL  string
+	Text string
+}
 
 var citationParseRegexp = regexp.MustCompile(`(?m)^([^\s]+):\s(.+)$`)
 
-func CitationsFromSources(sources []*Source) (Citations, error) {
+func CitationsFromSources(sources []*Source) (map[string]*Citation, error) {
 
-	cit := make(Citations)
+	cit := make(map[string]*Citation)
 
 	for _, source := range sources {
 
@@ -29,7 +33,14 @@ func CitationsFromSources(sources []*Source) (Citations, error) {
 					return nil, fmt.Errorf("cannot parse '%s' at %s:%d", line, source.Filename, i+1)
 				}
 
-				cit[string(subs[1])] = string(subs[2])
+				var c Citation
+				{
+					x := strings.Split(string(subs[2]), " ")
+					c.URL = x[0]
+					c.Text = strings.Join(x[1:], " ")
+				}
+
+				cit[string(subs[1])] = &c
 
 			}
 		}
