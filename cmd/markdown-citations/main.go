@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/codemicro/markdown-citations/internal/parse"
 )
@@ -38,9 +39,15 @@ func main() {
 		errLog.Fatal(err)
 	}
 
-	if err = ioutil.WriteFile(os.Args[1], fcont, 0644); err != nil {
+	var outfile string
+	{
+		x := strings.Split(os.Args[1], ".")
+		outfile = strings.Join(append(x[:len(x)-1], "gen", x[len(x)-1]), ".")
+	}
+
+	if err = ioutil.WriteFile(outfile, fcont, 0644); err != nil {
 		errLog.Fatal(err)
 	}
 
-	fmt.Println("done")
+	fmt.Println("Written to", outfile)
 }
