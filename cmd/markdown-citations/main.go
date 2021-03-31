@@ -10,7 +10,7 @@ import (
 	"github.com/codemicro/markdown-citations/internal/parse"
 )
 
-var errLog = log.New(os.Stderr, "", 0)
+var errLog = log.New(os.Stderr, "", 0) // zero so it just prints the message and nothing else
 
 func main() {
 
