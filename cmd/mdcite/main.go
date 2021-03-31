@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -24,7 +25,7 @@ func main() {
 		errLog.Fatalf("unable to read source file: %s\n", err.Error())
 	}
 
-	sourceFiles := parse.FindSources(fcont)
+	sourceFiles := parse.FindSources(&fcont)
 	err = parse.LoadSources(sourceFiles)
 	if err != nil {
 		errLog.Fatal(err)
@@ -45,7 +46,7 @@ func main() {
 		outfile = strings.Join(append(x[:len(x)-1], "gen", x[len(x)-1]), ".")
 	}
 
-	if err = ioutil.WriteFile(outfile, fcont, 0644); err != nil {
+	if err = ioutil.WriteFile(outfile, bytes.TrimSpace(fcont), 0644); err != nil {
 		errLog.Fatal(err)
 	}
 

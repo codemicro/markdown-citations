@@ -15,9 +15,10 @@ var sourceImportRegexp = regexp.MustCompile(`(?m)<!-- ?c:source=(.+\S) ?-->`)
 
 // FindSources finds any references to a citation file in a source document. The return value
 // is a slice of all these sources. Each source with a given name will appear only once.
-func FindSources(fcont []byte) []*Source {
+func FindSources(fcont *[]byte) []*Source {
 
-	matches := sourceImportRegexp.FindAllStringSubmatch(string(fcont), -1)
+	matches := sourceImportRegexp.FindAllStringSubmatch(string(*fcont), -1)
+	*fcont = sourceImportRegexp.ReplaceAll(*fcont, nil)
 
 	var o []*Source
 	u := make(map[string]struct{})
