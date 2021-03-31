@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"path/filepath"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -20,13 +21,18 @@ func main() {
 	}
 
 	// read source markdown file
+	absolutePath, err := filepath.Abs(os.Args[1])
+	if err != nil {
+		errLog.Fatal(err.Error())
+	}
+	currentDir := filepath.Dir(absolutePath)
 	fcont, err := os.ReadFile(os.Args[1])
 	if err != nil {
 		errLog.Fatalf("unable to read source file: %s\n", err.Error())
 	}
 
 	sourceFiles := parse.FindSources(&fcont)
-	err = parse.LoadSources(sourceFiles)
+	err = parse.LoadSources(sourceFiles, currentDir)
 	if err != nil {
 		errLog.Fatal(err)
 	}

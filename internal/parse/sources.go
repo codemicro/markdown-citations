@@ -2,6 +2,7 @@ package parse
 
 import (
 	"io/ioutil"
+	"path/filepath"
 	"regexp"
 )
 
@@ -37,11 +38,11 @@ func FindSources(fcont *[]byte) []*Source {
 }
 
 // LoadSources takes a slice of *Source and reads the associated files from disk
-func LoadSources(sources []*Source) error {
+func LoadSources(sources []*Source, basepath string) error {
 	for _, source := range sources {
 
-		// TODO: make this filepath relative to the source file path
-		fc, err := ioutil.ReadFile(source.Filename)
+		x := filepath.Join(basepath, source.Filename)
+		fc, err := ioutil.ReadFile(x)
 		if err != nil {
 			return err
 		}
