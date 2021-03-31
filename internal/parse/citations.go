@@ -19,6 +19,8 @@ func CitationsFromSources(sources []*Source) (Citations, error) {
 		lines := bytes.Split(source.Content, []byte("\n"))
 		for i, line := range lines {
 
+			line = bytes.ReplaceAll(line, []byte("\r"), nil) // compensate for CRLF
+
 			// ignore blank lines and comments
 			if !(bytes.Equal(line, nil) || bytes.HasPrefix(line, []byte("#"))) {
 
@@ -28,7 +30,7 @@ func CitationsFromSources(sources []*Source) (Citations, error) {
 				}
 
 				cit[string(subs[1])] = string(subs[2])
-				
+
 			}
 		}
 
