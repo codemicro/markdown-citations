@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"fmt"
 	"regexp"
+	"sort"
+	"strings"
 )
 
 var referenceRegexp = regexp.MustCompile(`(?m)\[r:([^\s]+)\]`)
@@ -40,9 +42,28 @@ func TransformReferences(fcont *[]byte, citations Citations) error {
 		*fcont = bytes.Replace(*fcont, match[0], []byte(makeMarkdownLink(label, url)), 1)
 
 	}
+
+	createFooter(fcont, numerical)
+
 	return nil
 }
 
 func makeMarkdownLink(text, url string) string {
 	return fmt.Sprintf("[%s](%s)", text, url)
+}
+
+var footerMarkerRegexp = regexp.MustCompile(`(?m)<!-- ?c:footer ?-->`)
+
+func createFooter(fcont *[]byte, mapping map[string]int) error {
+
+	var lines sort.StringSlice
+
+	for url, n := range mapping {
+		lines = append(lines, fmt.Sprintf("%d: %s", n, makeMarkdownLink(url, url)))
+	}
+
+	lines.Sort()
+	textBlock := strings.Join(lines, "\n")
+	*fcont = footerMarkerRegexp.ReplaceAll(*fcont, []byte(textBlock))
+	return nil
 }
