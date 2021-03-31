@@ -31,7 +31,7 @@ func TransformReferences(fcont *[]byte, citations map[string]*Citation) error {
 
 		cit, foundCitation := citations[stringMatchName]
 		if !foundCitation {
-			return fmt.Errorf("unrecognised reference to sitation name '%s'", stringMatchName)
+			return fmt.Errorf("unrecognised reference to citation name '%s'", stringMatchName)
 		}
 
 		preC, found := numerical[stringMatchName]
