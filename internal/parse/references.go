@@ -22,20 +22,23 @@ func TransformReferences(fcont *[]byte, citations Citations) error {
 	for _, match := range matches {
 		stringMatchName := string(match[1])
 
-		preC, found := numerical[stringMatchName]
+		url, foundCitation := citations[stringMatchName]
+		if !foundCitation {
+			return fmt.Errorf("unrecognised reference to sitation name '%s'", stringMatchName)
+		}
+
+		preC, found := numerical[url]
 		n := preC
 		if !found {
 			n = c
 			c += 1
 		}
 
-		url, foundCitation := citations[stringMatchName]
-		if !foundCitation {
-			return fmt.Errorf("unrecognised reference to sitation name '%s'", stringMatchName)
-		}
+		numerical[url] = n
 
 		label := fmt.Sprintf("[%d]", n)
 		*fcont = bytes.Replace(*fcont, match[0], []byte(makeMarkdownLink(label, url)), 1)
+
 	}
 	return nil
 }
