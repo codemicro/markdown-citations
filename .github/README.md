@@ -17,7 +17,7 @@ Markdown Citations (MC) is a tool that allows you to define citations in a Markd
 
 # Hello!
 
-    This is a statement. Statements can be classified based on their purpose[r:wikip-statement].
+This is a statement. Statements can be classified based on their purpose[r:wikip-statement].
 
 Statement can also refer to a part of an imperative programming language that expresses an action to be carried out[r:statement-cs].
 
