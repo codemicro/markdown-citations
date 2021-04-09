@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 )
 
@@ -61,7 +62,7 @@ var footerMarkerRegexp = regexp.MustCompile(`(?m)<!-- ?c:footer ?-->`)
 
 func createFooter(fcont *[]byte, mapping map[string]int, citations map[string]*Citation) error {
 
-	var lines sort.StringSlice
+	var lines []string
 
 	for key, n := range mapping {
 
@@ -76,7 +77,12 @@ func createFooter(fcont *[]byte, mapping map[string]int, citations map[string]*C
 		lines = append(lines, fmt.Sprintf("%d: %s", n, linkSection))
 	}
 
-	lines.Sort()
+	sort.Slice(lines, func(i, j int) bool {
+		iNum, _ := strconv.Atoi(strings.Split(lines[i], ":")[0])
+		jNum, _ := strconv.Atoi(strings.Split(lines[j], ":")[0])
+		return iNum < jNum
+	})
+	
 	textBlock := strings.Join(lines, "\n")
 	*fcont = footerMarkerRegexp.ReplaceAll(*fcont, []byte(textBlock))
 	return nil
